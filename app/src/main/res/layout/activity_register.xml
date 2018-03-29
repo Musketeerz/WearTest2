@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.nithe.weartest2.RegisterActivity">
+
+
+    <EditText
+        android:id="@+id/adhar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="13dp"
+        android:ems="10"
+        android:hint="Enter first 5 aadhar numbers"
+        android:inputType="textPersonName"
+        tools:layout_editor_absoluteX="84dp"
+        tools:layout_editor_absoluteY="83dp" />
+
+    <EditText
+        android:id="@+id/consumer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:layout_below="@id/adhar"
+        android:layout_centerInParent="true"
+        android:hint="Enter last 5 consumer numbers"
+        tools:layout_editor_absoluteX="84dp"
+        tools:layout_editor_absoluteY="166dp" />
+
+    <TextView
+        android:id="@+id/sync"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sync"
+        android:layout_marginTop="30dp"
+        android:layout_below="@id/consumer"
+        android:layout_centerInParent="true"
+        tools:layout_editor_absoluteX="163dp"
+        tools:layout_editor_absoluteY="271dp" />
+
+</RelativeLayout>
