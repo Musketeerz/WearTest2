@@ -35,3 +35,6 @@ dependencies {
     implementation 'com.android.support:wear:26.1.0'
     compileOnly 'com.google.android.wearable:wearable:2.2.0'
 }
+
+
+apply plugin: 'com.google.gms.google-services'

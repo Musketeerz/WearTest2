@@ -54,7 +54,7 @@ public class DashboardActivity extends WearableActivity {
     private final int REQ_CODE_SPEECH_INPUT = 100;
     private String command, reply;
     DatabaseReference databaseReference;
-    public static String passcode_pass = "3333355555";
+    public static String passcode_pass;
     public int pass = 0, all = 0;
     public SQLiteDatabase db;
     Cursor c;
@@ -67,40 +67,40 @@ public class DashboardActivity extends WearableActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mTextView = (TextView) findViewById(R.id.text);
+     //   mTextView = (TextView) findViewById(R.id.text);
 
 //        passcode_pass = getIntent().getStringExtra("KEY");
 //
-//        try {
-//            db = openOrCreateDatabase("REGISTRATION_STATUS", Context.MODE_PRIVATE, null);
-//            db.execSQL("CREATE TABLE IF NOT EXISTS reg(sno VARCHAR,passcode VARCHAR);");
-//            c = db.rawQuery("SELECT * FROM reg", null);
-//            if (c.getCount() == 0) {
-//                Intent nxt = new Intent(DashboardActivity.this,RegisterActivity.class);
-//                startActivity(nxt);
-//                return;
-//            }
-//            else {
-//                String a = "1";
-//                c = db.rawQuery("SELECT * FROM reg WHERE sno='" + a + "'", null);
-//                if (c.moveToFirst()) {
-//                    passcode_pass = c.getString(1);
-//                    Log.d("pass", "pass: " + passcode_pass);
-//                }
-//            }
-//        }
-//        catch (Exception e) {
-//            Toast.makeText(getApplicationContext(), "Database Failure", Toast.LENGTH_SHORT).show();
-//        }
-
-        tts = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int i) {
-                if (i != TextToSpeech.ERROR) {
-                    tts.setLanguage(Locale.UK);
+        try {
+            db = openOrCreateDatabase("REGISTRATION_STATUS", Context.MODE_PRIVATE, null);
+            db.execSQL("CREATE TABLE IF NOT EXISTS reg(sno VARCHAR,passcode VARCHAR);");
+            c = db.rawQuery("SELECT * FROM reg", null);
+            if (c.getCount() == 0) {
+                Intent nxt = new Intent(DashboardActivity.this,RegisterActivity.class);
+                startActivity(nxt);
+                return;
+            }
+            else {
+                String a = "1";
+                c = db.rawQuery("SELECT * FROM reg WHERE sno='" + a + "'", null);
+                if (c.moveToFirst()) {
+                    passcode_pass = c.getString(1);
+                    Log.d("pass", "pass: " + passcode_pass);
                 }
             }
-        });
+        }
+        catch (Exception e) {
+            Toast.makeText(getApplicationContext(), "Database Failure", Toast.LENGTH_SHORT).show();
+        }
+
+//        tts = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+//            @Override
+//            public void onInit(int i) {
+//                if (i != TextToSpeech.ERROR) {
+//                    tts.setLanguage(Locale.UK);
+//                }
+//            }
+//        });
 
 //        databaseReference = FirebaseDatabase.getInstance().getReference(passcode_pass).child("USER DETAILS");
 //        databaseReference.addValueEventListener(new ValueEventListener() {
@@ -198,153 +198,178 @@ public class DashboardActivity extends WearableActivity {
 //        });
 
         // Enables Always-on
-        setAmbientEnabled();
-    }
+//        setAmbientEnabled();
+//    }
+//
+//    public void ecoMode(View view) {
+//        if (eco.isChecked()) {
+//            databaseReference= FirebaseDatabase.getInstance().getReference(passcode_pass).child("ECOMODE STATUS");
+//            databaseReference.child("WATER HEATER").setValue("Water Heater_true");
+//            databaseReference.child("IRON BOX").setValue("Iron Box_true");
+//            databaseReference.child("OUTSIDE LIGHT").setValue("Outside Light_true");
+//            databaseReference.child("BEDROOM LIGHT").setValue("Bedroom Light_true");
+//            databaseReference.child("WATER MOTOR").setValue("Water Motor_true");
+//            databaseReference.child("BEDROOM FAN").setValue("Bedroom Fan_true");
+//            databaseReference.child("WASHING MACHINE").setValue("Washing Machine_true");
+//        } else {
+//            databaseReference= FirebaseDatabase.getInstance().getReference(passcode_pass).child("ECOMODE STATUS");
+//            databaseReference.child("WATER HEATER").setValue("Water Heater_false");
+//            databaseReference.child("IRON BOX").setValue("Iron Box_false");
+//            databaseReference.child("OUTSIDE LIGHT").setValue("Outside Light_false");
+//            databaseReference.child("BEDROOM LIGHT").setValue("Bedroom Light_false");
+//            databaseReference.child("WATER MOTOR").setValue("Water Motor_false");
+//            databaseReference.child("BEDROOM FAN").setValue("Bedroom Fan_false");
+//            databaseReference.child("WASHING MACHINE").setValue("Washing Machine_false");
+//        }
+//    }
+//
+//
+//    public void talk(View view) {
+//        promptSpeechInput();
+//    }
+//
+//    private void promptSpeechInput() {
+//        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+//        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+//                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+//        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+//        intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
+//                getString(R.string.speech_prompt));
+//        try {
+//            startActivityForResult(intent, REQ_CODE_SPEECH_INPUT);
+//        } catch (ActivityNotFoundException a) {
+//            Toast.makeText(getApplicationContext(),
+//                    getString(R.string.speech_not_supported),
+//                    Toast.LENGTH_SHORT).show();
+//        }
+//    }
+//
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        switch (requestCode) {
+//            case REQ_CODE_SPEECH_INPUT: {
+//                if (resultCode == RESULT_OK && null != data) {
+//
+//                    ArrayList<String> result = data
+//                            .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+//                    command = result.get(0).toLowerCase();
+//                    makeToast(command);
+//                }
+//                break;
+//            }
+//
+//        }
+//    }
+//
+//    private void makeToast(String cmd) {
+//        int got = 0;
+//        for (int i = 0; i < name_voice.size(); i++) {
+//            if (got == 1)
+//                break;
+//            String name_voice_ = name_voice.get(i);
+//            if (cmd.contains("eco")) {
+//                if (cmd.contains(name_voice_)) {
+//                    if (cmd.contains("on")) {
+//                        if (a_eco.get(i)) {
+//                            got = 1;
+//                            reply = "eco mode of " + name_voice_ + " already turned on";
+//                        }
+//                        else {
+//                            got = 1;
+//                            reply = "eco mode of " + name_voice_ + " turned on";
+//                            databaseReference = FirebaseDatabase.getInstance().getReference(passcode_pass).child("ECOMODE STATUS");
+//                            databaseReference.child(name_voice_.toUpperCase()).setValue(a_name.get(i) + "_true");
+//                        }
+//                    } else if (cmd.contains("off")) {
+//                        if (!a_eco.get(i)) {
+//                            got = 1;
+//                            reply = "eco mode of " + name_voice_ + " already turned off";
+//                        }
+//                        else {
+//                            got = 1;
+//                            reply = "eco mode of " + name_voice_ + " turned off";
+//                            databaseReference = FirebaseDatabase.getInstance().getReference(passcode_pass).child("ECOMODE STATUS");
+//                            databaseReference.child(name_voice_.toUpperCase()).setValue(a_name.get(i) + "_false");
+//                        }
+//                    } else {
+//                        reply = "Pardon! Speak Again.";
+//                    }
+//                } else if (cmd.contains("on")) {
+//                    got = 1;
+//                    eco.setChecked(true);
+//                    ecoMode(eco);
+//                    reply = "eco mode turned on";
+//                } else if (cmd.contains("off")) {
+//                    got = 1;
+//                    eco.setChecked(false);
+//                    ecoMode(eco);
+//                    reply = "eco mode turned off";
+//                } else {
+//                    reply = "Pardon! Speak Again.";
+//                }
+//            } else if (cmd.contains(name_voice_)) {
+//                if (cmd.contains("on")) {
+//                    if (a_switch.get(i)) {
+//                        got = 1;
+//                        reply = name_voice_ + " already turned on";
+//                    }
+//                    else {
+//                        got = 1;
+//                        reply = name_voice_ + " turned on";
+//                        databaseReference = FirebaseDatabase.getInstance().getReference(passcode_pass).child("DEVICE STATUS");
+//                        databaseReference.child(name_voice_.toUpperCase()).setValue(a_name.get(i) + "_true");
+//                    }
+//                } else if (cmd.contains("off")) {
+//                    if (!a_switch.get(i)) {
+//                        got = 1;
+//                        reply = name_voice_ + " already turned off";
+//                    }
+//                    else {
+//                        got = 1;
+//                        reply = name_voice_ + " turned off";
+//                        databaseReference = FirebaseDatabase.getInstance().getReference(passcode_pass).child("DEVICE STATUS");
+//                        databaseReference.child(name_voice_.toUpperCase()).setValue(a_name.get(i) + "_false");
+//                    }
+//                } else {
+//                    Log.d("pardon", "pardon: in");
+//                    reply = "Pardon! Speak Again.";
+//                }
+//            } else {
+//                Log.d("pardon", "pardon: out");
+//                reply = "Pardon! Speak Again.";
+//            }
+//        }
+//        Toast.makeText(getApplicationContext(), reply, Toast.LENGTH_SHORT).show();
+//        tts.speak(reply, TextToSpeech.QUEUE_FLUSH, null);
+//    }
+//
+//    public void showMessage(String title, String message) {
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setCancelable(true);
+//        builder.setTitle(title);
+//        builder.setMessage(message);
+//        builder.show();
+//
 
-    public void ecoMode(View view) {
-        if (eco.isChecked()) {
-            databaseReference= FirebaseDatabase.getInstance().getReference(passcode_pass).child("ECOMODE STATUS");
-            databaseReference.child("WATER HEATER").setValue("Water Heater_true");
-            databaseReference.child("IRON BOX").setValue("Iron Box_true");
-            databaseReference.child("OUTSIDE LIGHT").setValue("Outside Light_true");
-            databaseReference.child("BEDROOM LIGHT").setValue("Bedroom Light_true");
-            databaseReference.child("WATER MOTOR").setValue("Water Motor_true");
-            databaseReference.child("BEDROOM FAN").setValue("Bedroom Fan_true");
-            databaseReference.child("WASHING MACHINE").setValue("Washing Machine_true");
-        } else {
-            databaseReference= FirebaseDatabase.getInstance().getReference(passcode_pass).child("ECOMODE STATUS");
-            databaseReference.child("WATER HEATER").setValue("Water Heater_false");
-            databaseReference.child("IRON BOX").setValue("Iron Box_false");
-            databaseReference.child("OUTSIDE LIGHT").setValue("Outside Light_false");
-            databaseReference.child("BEDROOM LIGHT").setValue("Bedroom Light_false");
-            databaseReference.child("WATER MOTOR").setValue("Water Motor_false");
-            databaseReference.child("BEDROOM FAN").setValue("Bedroom Fan_false");
-            databaseReference.child("WASHING MACHINE").setValue("Washing Machine_false");
+
+}
+
+    public void logout(View view) {
+        db = openOrCreateDatabase("REGISTRATION_STATUS", Context.MODE_PRIVATE, null);
+
+        c = db.rawQuery("SELECT * FROM reg WHERE sno='" + sno + "'", null);
+        if (c.moveToFirst()) {
+            db.execSQL("DELETE FROM reg WHERE sno='" + sno + "'");
+            showMessage("Success", "Successfully Logged Out");
+
+
+            Intent nxt=new Intent(DashboardActivity.this,RegisterActivity.class);
+            startActivity(nxt);
         }
+
     }
-
-
-    public void talk(View view) {
-        promptSpeechInput();
-    }
-
-    private void promptSpeechInput() {
-        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
-        intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
-                getString(R.string.speech_prompt));
-        try {
-            startActivityForResult(intent, REQ_CODE_SPEECH_INPUT);
-        } catch (ActivityNotFoundException a) {
-            Toast.makeText(getApplicationContext(),
-                    getString(R.string.speech_not_supported),
-                    Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        switch (requestCode) {
-            case REQ_CODE_SPEECH_INPUT: {
-                if (resultCode == RESULT_OK && null != data) {
-
-                    ArrayList<String> result = data
-                            .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                    command = result.get(0).toLowerCase();
-                    makeToast(command);
-                }
-                break;
-            }
-
-        }
-    }
-
-    private void makeToast(String cmd) {
-        int got = 0;
-        for (int i = 0; i < name_voice.size(); i++) {
-            if (got == 1)
-                break;
-            String name_voice_ = name_voice.get(i);
-            if (cmd.contains("eco")) {
-                if (cmd.contains(name_voice_)) {
-                    if (cmd.contains("on")) {
-                        if (a_eco.get(i)) {
-                            got = 1;
-                            reply = "eco mode of " + name_voice_ + " already turned on";
-                        }
-                        else {
-                            got = 1;
-                            reply = "eco mode of " + name_voice_ + " turned on";
-                            databaseReference = FirebaseDatabase.getInstance().getReference(passcode_pass).child("ECOMODE STATUS");
-                            databaseReference.child(name_voice_.toUpperCase()).setValue(a_name.get(i) + "_true");
-                        }
-                    } else if (cmd.contains("off")) {
-                        if (!a_eco.get(i)) {
-                            got = 1;
-                            reply = "eco mode of " + name_voice_ + " already turned off";
-                        }
-                        else {
-                            got = 1;
-                            reply = "eco mode of " + name_voice_ + " turned off";
-                            databaseReference = FirebaseDatabase.getInstance().getReference(passcode_pass).child("ECOMODE STATUS");
-                            databaseReference.child(name_voice_.toUpperCase()).setValue(a_name.get(i) + "_false");
-                        }
-                    } else {
-                        reply = "Pardon! Speak Again.";
-                    }
-                } else if (cmd.contains("on")) {
-                    got = 1;
-                    eco.setChecked(true);
-                    ecoMode(eco);
-                    reply = "eco mode turned on";
-                } else if (cmd.contains("off")) {
-                    got = 1;
-                    eco.setChecked(false);
-                    ecoMode(eco);
-                    reply = "eco mode turned off";
-                } else {
-                    reply = "Pardon! Speak Again.";
-                }
-            } else if (cmd.contains(name_voice_)) {
-                if (cmd.contains("on")) {
-                    if (a_switch.get(i)) {
-                        got = 1;
-                        reply = name_voice_ + " already turned on";
-                    }
-                    else {
-                        got = 1;
-                        reply = name_voice_ + " turned on";
-                        databaseReference = FirebaseDatabase.getInstance().getReference(passcode_pass).child("DEVICE STATUS");
-                        databaseReference.child(name_voice_.toUpperCase()).setValue(a_name.get(i) + "_true");
-                    }
-                } else if (cmd.contains("off")) {
-                    if (!a_switch.get(i)) {
-                        got = 1;
-                        reply = name_voice_ + " already turned off";
-                    }
-                    else {
-                        got = 1;
-                        reply = name_voice_ + " turned off";
-                        databaseReference = FirebaseDatabase.getInstance().getReference(passcode_pass).child("DEVICE STATUS");
-                        databaseReference.child(name_voice_.toUpperCase()).setValue(a_name.get(i) + "_false");
-                    }
-                } else {
-                    Log.d("pardon", "pardon: in");
-                    reply = "Pardon! Speak Again.";
-                }
-            } else {
-                Log.d("pardon", "pardon: out");
-                reply = "Pardon! Speak Again.";
-            }
-        }
-        Toast.makeText(getApplicationContext(), reply, Toast.LENGTH_SHORT).show();
-        tts.speak(reply, TextToSpeech.QUEUE_FLUSH, null);
-    }
-
     public void showMessage(String title, String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(true);
@@ -352,5 +377,4 @@ public class DashboardActivity extends WearableActivity {
         builder.setMessage(message);
         builder.show();
     }
-
 }

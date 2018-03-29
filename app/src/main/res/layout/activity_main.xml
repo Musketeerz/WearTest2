@@ -16,12 +16,21 @@
         android:padding="@dimen/inner_frame_layout_padding"
         app:boxedEdges="all">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="L O G O U T"
+            android:textColor="#000"
+            android:onClick="logout"
+            android:layout_margin="10dp"
+            android:textSize="16sp" />
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="talk"
             android:onClick="talk"
-            />
+            android:layout_marginLeft="100dp"
+            android:text="talk" />
 
     </FrameLayout>
 </android.support.wear.widget.BoxInsetLayout>

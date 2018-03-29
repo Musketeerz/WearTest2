@@ -10,6 +10,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
@@ -18,7 +20,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -56,7 +62,69 @@ public class RegisterActivity extends AppCompatActivity {
         adhaar =findViewById(R.id.adhar);
         consumer = findViewById(R.id.consumer);
 
-        
+        databaseReference= FirebaseDatabase.getInstance().getReference("USER LOGIN DETAILS");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot child:dataSnapshot.getChildren()) {
+                    String usrs = child.getValue(String.class);
+
+                    login_details.add(usrs);
+
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        adhaar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                if(adhaar.getText().length()==5)
+                {
+                    consumer.requestFocus();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        consumer.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                if(consumer.getText().length()==5)
+                {
+                    consumer.clearFocus();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
+
 
         sync.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,6 +136,8 @@ public class RegisterActivity extends AppCompatActivity {
                     db = openOrCreateDatabase("REGISTRATION_STATUS", Context.MODE_PRIVATE, null);
 
                     db.execSQL("INSERT INTO reg VALUES('" + sno + "','" +login + "');");
+
+
 
                     Intent nxt = new Intent(RegisterActivity.this, DashboardActivity.class);
                     nxt.putExtra("KEY", login);
